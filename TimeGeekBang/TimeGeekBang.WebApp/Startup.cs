@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using TimeGeekBang.WebApp.Services.IoCService;
 
 namespace TimeGeekBang.WebApp
 {
@@ -26,6 +28,42 @@ namespace TimeGeekBang.WebApp
         // 依赖注入
         public void ConfigureServices(IServiceCollection services)
         {
+            #region 注册不同生命周期的服务
+
+            services.AddSingleton<IMySingletonService, MySingletonService>(); // 单例模式注册服务
+            services.AddScoped<IMyScopedService, MyScopedService>(); // 作用域模式注册服务
+            services.AddTransient<IMyTransientService, MyTransientService>(); // 瞬时模式注册服务
+
+            #endregion
+
+
+            #region 不同的注册写法
+
+            services.AddSingleton<IOrderService>(new OrderService()); // 直接使用实例注册
+
+            // 使用工厂方式注册
+            services.AddScoped<IOrderService>(ServiceProvider => 
+            {
+                return new OrderServiceEx();
+            });
+
+            // 使用工厂方式注册
+            services.AddScoped<IOrderService>(ServiceProvider =>
+            {
+                //ServiceProvider.GetService<>(); // 通过使用 IServiceProvider 的入参实现获取对个对象，然后进行组装得到实例。比如实现类依赖了容器中的另一个类，或者使用另外一个类包装原有的实现类
+                return new OrderServiceEx2();
+            });
+
+            #endregion
+
+
+            #region 尝试注册：如果服务已经注册过了，就不再注册了
+
+            services.TryAddSingleton<IOrderService, OrderServiceEx>();
+
+            #endregion
+
+
             services.AddControllers(); // 注册 Controller 服务（注：因为是 WebAPI 项目，所以只注册 Controller 就可以了，MVC 项目应该是注册 services.AddMVC();）
         }
 
