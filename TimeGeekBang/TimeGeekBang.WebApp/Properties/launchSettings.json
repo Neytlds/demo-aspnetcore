@@ -26,6 +26,7 @@
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
     },
+    // 这个配置用在调试中启动控制台
     "Routine.Api": {
       "commandName": "Project",
       "launchBrowser": true,
