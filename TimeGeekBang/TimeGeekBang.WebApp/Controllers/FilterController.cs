@@ -33,7 +33,7 @@ namespace TimeGeekBang.WebApp.Controllers
 
         [HttpGet]
         [Route("Index2")]
-        [CustomActionFilterAttribute]
+        [CustomActionFilter]
         public IActionResult ActionFilter(int id, string name)
         {
             // 1、记录日志：记录Id，name
