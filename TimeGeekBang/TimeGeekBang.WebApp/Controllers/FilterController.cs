@@ -10,7 +10,7 @@ using TimeGeekBang.WebApp.Services.FilterService;
 namespace TimeGeekBang.WebApp.Controllers
 {
     /// <summary>
-    /// 一些特性的例子
+    /// 一些过滤器的例子
     /// </summary>
     [ApiController]
     [Route("[controller]")]
@@ -21,18 +21,24 @@ namespace TimeGeekBang.WebApp.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("Index")]
+        [Route("ExceptionFilter")]
         [CustomExceptionFilter]
         public IActionResult ExceptionFilter()
         {
             int i = 10;
             int j = 0;
-            int x = i / j; // 这里将产生除数为 0 的异常
+            int x = i / j; // 这里将产生除数为 0 的异常（注意：调试的时候这里会先抛出异常，点击 F5 继续执行后才能进入过滤器执行异常的后续操作）
             return new JsonResult(x);
         }
 
+        /// <summary>
+        /// 这个 Action 演示了如何使用 ActionFilter 记录日志
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("Index2")]
+        [Route("ActionFilter")]
         [CustomActionFilter]
         public IActionResult ActionFilter(int id, string name)
         {
