@@ -18,6 +18,7 @@ namespace TimeGeekBang.WebApp.Controllers
         /// 
         /// </summary>
         [HttpGet]
+        [Route("Index")]
         public int Index([FromServices] IMySingletonService _iMySingletonService1, // [FromServices]：用于从容器中获取对象
                                     [FromServices] IMySingletonService _iMySingletonService2,
                                     [FromServices] IMyTransientService _iMyTransientService1,
@@ -48,6 +49,8 @@ namespace TimeGeekBang.WebApp.Controllers
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
+        [HttpGet]
+        [Route("GetServiceList")]
         public int GetServiceList([FromServices] IEnumerable<IOrderService> services)
         {
             foreach (var item in services)

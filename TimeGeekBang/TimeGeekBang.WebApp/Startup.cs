@@ -59,7 +59,24 @@ namespace TimeGeekBang.WebApp
 
             #region 尝试注册：如果服务已经注册过了，就不再注册了
 
-            services.TryAddSingleton<IOrderService, OrderServiceEx>();
+            services.TryAddSingleton<IOrderService, OrderServiceEx>(); // 如果接口类型已经注册过了，就不再注册了
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IOrderService, OrderService>()); // 接口类型相同，实现类不同就可以注册，如果实现类相同就不注册
+
+            #endregion
+
+
+            #region 移除和替换
+
+            services.Replace(ServiceDescriptor.Singleton<IOrderService, OrderServiceEx>()); // 将 IOrderService 的实现类替换为 OrderServiceEx
+            services.RemoveAll<IOrderService>(); // 移除所有 IOrderService 的注册
+
+            #endregion
+
+
+            #region 注册泛型模板
+
+            // 注册一组泛型类型时，由于不知道泛型的入参是什么，所以可以使用依赖注入框架提供的泛型模板注入方式。这意味着通过这行代码可以注册所有此泛型的实现类
+            services.AddSingleton(typeof(IGenericService<>),typeof(GenericService<>));
 
             #endregion
 
