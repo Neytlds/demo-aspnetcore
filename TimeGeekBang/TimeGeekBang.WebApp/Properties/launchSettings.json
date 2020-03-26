@@ -30,11 +30,11 @@
     "Routine.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "IoCDefault/GetServiceList",
+      "launchUrl": "IoCDefault/GetServiceList", // 设置启动路径
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+      "applicationUrl": "https://localhost:5001;http://localhost:5000" // 设置 https 和 http 的启动路径及端口
     }
   }
 }
