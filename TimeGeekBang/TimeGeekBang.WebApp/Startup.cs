@@ -68,7 +68,7 @@ namespace TimeGeekBang.WebApp
             #region 移除和替换
 
             services.Replace(ServiceDescriptor.Singleton<IOrderService, OrderServiceEx>()); // 将 IOrderService 的实现类替换为 OrderServiceEx
-            services.RemoveAll<IOrderService>(); // 移除所有 IOrderService 的注册
+            //services.RemoveAll<IOrderService>(); // 移除所有 IOrderService 的注册
 
             #endregion
 

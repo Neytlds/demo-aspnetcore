@@ -14,8 +14,22 @@ namespace TimeGeekBang.WebApp.Controllers
     [Route("[controller]")]
     public class IoCDefaultController : Controller
     {
+        private readonly IOrderService _iOrderService;
+        private readonly IGenericService<IOrderService> _iGenericService;
+
         /// <summary>
-        /// 
+        /// 构造方法，用于演示泛型依赖注入
+        /// </summary>
+        /// <param name="_iOrderService"></param>
+        /// <param name="_iGenericService"></param>
+        public IoCDefaultController(IOrderService iOrderService, IGenericService<IOrderService> iGenericService) // 通过构造函数获取依赖注入的实例
+        {
+            _iOrderService = iOrderService;
+            _iGenericService = iGenericService;
+        }
+
+        /// <summary>
+        /// 演示三种不同生命周期的依赖注入
         /// </summary>
         [HttpGet]
         [Route("Index")]
