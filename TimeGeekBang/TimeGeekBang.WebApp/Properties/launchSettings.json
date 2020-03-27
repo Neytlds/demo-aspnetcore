@@ -30,7 +30,7 @@
     "Routine.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "IoCDefault/GetServiceList", // 设置启动路径
+      "launchUrl": "IoCDefault/DisposableSingleton", // 设置启动路径
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

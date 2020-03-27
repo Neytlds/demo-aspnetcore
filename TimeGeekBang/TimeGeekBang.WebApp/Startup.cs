@@ -42,7 +42,7 @@ namespace TimeGeekBang.WebApp
             services.AddSingleton<IOrderService>(new OrderService()); // 直接使用实例注册
 
             // 使用工厂方式注册
-            services.AddScoped<IOrderService>(ServiceProvider => 
+            services.AddScoped<IOrderService>(ServiceProvider =>
             {
                 return new OrderServiceEx();
             });
@@ -76,7 +76,16 @@ namespace TimeGeekBang.WebApp
             #region 注册泛型模板
 
             // 注册一组泛型类型时，由于不知道泛型的入参是什么，所以可以使用依赖注入框架提供的泛型模板注入方式。这意味着通过这行代码可以注册所有此泛型的实现类
-            services.AddSingleton(typeof(IGenericService<>),typeof(GenericService<>));
+            services.AddSingleton(typeof(IGenericService<>), typeof(GenericService<>));
+
+            #endregion
+
+
+            #region 作用域与对象释放行为
+
+            services.AddTransient<IDisposableTransientService, DisposableTransientService>();
+            services.AddScoped<IDisposableScopedService, DisposableScopedService>();
+            services.AddSingleton<IDisposableSingletonService>(p => new DisposableSingletonService());
 
             #endregion
 
@@ -88,6 +97,16 @@ namespace TimeGeekBang.WebApp
         // 用于指定 asp.net core web 程序是如何响应每一个 http 请求的，这里配置了请求的管道，可以通过添加中间件的方式配置这些管道
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            /*
+             * 注意：
+             * 实现类 IDisposable 接口的服务，如果注册为瞬时服务（Transient），又在根容器中操作，对象会一直保持到应用程序退出时才释放掉
+             * 
+             * 即下面代码获取的两个对象将保持到应用程序退出才会释放
+             * 
+             * var service = app.ApplicationService.GetService<IDisposableTransientService>();
+             * var service2 = app.ApplicationService.GetService<IDisposableTransientService>();
+            */
+
             // 判断当前是否为开发环境，如果是，则在系统出现异常时返回供开发时的异常页面
             if (env.IsDevelopment())
             {
